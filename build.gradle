@@ -1,3 +1,32 @@
+import com.moowork.gradle.node.NodePlugin
+
+buildscript {
+  repositories { jcenter() }
+  dependencies {
+    classpath 'com.moowork.gradle:gradle-node-plugin:0.5'
+  }
+}
+
+apply plugin: 'node'
+
 allprojects {
   version = '0.0.1'
+  plugins.withType(NodePlugin) {
+    node {
+      version = '0.10.26'
+      download = true
+      workDir = rootProject.file("${rootProject.buildDir}/nodejs")
+    }
+  }
+  if (it != rootProject) {
+    nodeSetup.enabled = false
+    npmInstall.dependsOn rootProject.tasks.nodeSetup
+  }
+}
+
+project.afterEvaluate {
+  nodeSetup {
+    inputs.property 'version', node.version
+    onlyIf { !(it.variant.nodeDir).exists() }
+  }
 }
