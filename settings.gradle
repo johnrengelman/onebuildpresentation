@@ -18,3 +18,16 @@ rootDir.traverse(
         include path.join(':') //register the project path using : notation
     }
 }
+
+rootProject.children.each { project ->
+    setSubprojectBuildFile(project)
+}
+
+void setSubprojectBuildFile(def project) {
+    String fileBaseName = project.name.replaceAll("\\p{Upper}") { "-${it.toLowerCase()}"}
+    project.buildFileName = "${fileBaseName}.gradle"
+    assert project.buildFile.isFile()
+    project.children.each { subproject ->
+        setSubprojectBuildFile(subproject)
+    }
+}
