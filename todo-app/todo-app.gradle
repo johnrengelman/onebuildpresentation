@@ -1,11 +1,15 @@
+import com.moowork.gradle.grunt.GruntTask
+
 buildscript {
   repositories { jcenter() }
   dependencies {
     classpath 'org.grails:grails-gradle-plugin:2.0.1'
+    classpath 'com.moowork.gradle:gradle-grunt-plugin:0.5'
   }
 }
 
 apply plugin: 'grails'
+apply plugin: 'grunt'
 
 repositories {
   grails.central()
@@ -24,3 +28,16 @@ dependencies {
 
   runtime 'com.h2database:h2:1.4.178'
 }
+
+project.afterEvaluate {
+  project.tasks.withType(GruntTask) { task ->
+    task.dependsOn npmInstall
+  }
+}
+task compileJs(type: GruntTask) {
+  args = ['compile']
+}
+
+assemble.dependsOn compileJs
+
+project.tasks.'grails-war'.mustRunAfter compileJs
