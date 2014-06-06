@@ -6,9 +6,9 @@ module.exports = function(grunt) {
 
   var config = {
     jsSrcDir: 'src/js',
-    jsDistDir: 'web-app/js',
+    jsDistDir: 'grails-app/assets/javascripts',
     lessSrcDir: 'src/less',
-    cssDistDir: 'web-app/css',
+    cssDistDir: 'grails-app/assets/stylesheets',
     partialsSrcDir: 'src/partials',
     partialsDistDir: 'build/partials'
   }
@@ -17,11 +17,11 @@ module.exports = function(grunt) {
     pkg: config,
     concat: {
       todo: {
-        src: ['<%= pkg.jsSrcDir %>/**/*.js', '<%= pkg.partialsDistDir %>/partials.js'],
+        src: ['<%= pkg.jsSrcDir %>/*.js', '<%= pkg.jsSrcDir %>/**/*.js', '<%= pkg.partialsDistDir %>/partials.js'],
         dest: '<%= pkg.jsDistDir %>/todo.js'
       }
     },
-    html2j: {
+    html2js: {
       todo: {
         src: ['<%= pkg.partialsSrcDir %>/**/*.html'],
         dest: '<%= pkg.partialsDistDir %>/partials.js',

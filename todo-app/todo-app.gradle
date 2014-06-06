@@ -75,9 +75,15 @@ task bowerInstall(type: BowerTask) {
   args = ['install']
   inputs.file 'bower.json'
   inputs.file '.bowerrc'
-  outputs.dir 'web-app/vendorJs'
+  outputs.dir 'grails-app/assets/javascripts'
 }
 
 assemble.dependsOn bowerInstall
 
 project.tasks.'grails-war'.mustRunAfter bowerInstall
+
+project.tasks.'grails-run-app'.dependsOn bowerInstall, compileJs
+
+clean {
+  delete file('grails-app/assets/javascripts')
+}
