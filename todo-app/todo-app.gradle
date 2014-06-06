@@ -1,4 +1,5 @@
 import com.moowork.gradle.grunt.GruntTask
+import com.moowork.gradle.node.task.NodeTask
 
 buildscript {
   repositories { jcenter() }
@@ -41,3 +42,42 @@ task compileJs(type: GruntTask) {
 assemble.dependsOn compileJs
 
 project.tasks.'grails-war'.mustRunAfter compileJs
+
+class BowerTask extends NodeTask {
+  private String bowerScriptPath
+
+  BowerTask() {
+    group = 'Bower'
+  }
+
+  String getBowerScript() {
+    bowerScriptPath ?: 'node_modules/bower/bin/bower'
+  }
+
+  @Override
+  void exec() {
+    def localBower = project.file(bowerScript)
+    if (!localBower.file) {
+      throw new GradleException('Bower not installed')
+    }
+    setScript(localBower)
+    super.exec()
+  }
+}
+
+project.afterEvaluate {
+  project.tasks.withType(BowerTask) { task ->
+    task.dependsOn npmInstall
+  }
+}
+
+task bowerInstall(type: BowerTask) {
+  args = ['install']
+  inputs.file 'bower.json'
+  inputs.file '.bowerrc'
+  outputs.dir 'web-app/vendorJs'
+}
+
+assemble.dependsOn bowerInstall
+
+project.tasks.'grails-war'.mustRunAfter bowerInstall
