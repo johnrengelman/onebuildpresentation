@@ -5,3 +5,10 @@ server:
   adminConnectors:
     - type: http
       port: 9091
+
+database:
+  driverClass: org.h2.Driver
+  user: sa
+  url: jdbc:h2:./build/db
+  properties:
+    hibernate.hbm2ddl.auto: create

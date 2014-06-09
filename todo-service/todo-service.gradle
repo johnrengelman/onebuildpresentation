@@ -19,6 +19,9 @@ dependencies {
   compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
   compile project(":todo-api")
   compile "io.dropwizard:dropwizard-core:${dropwizardVersion}"
+  compile "io.dropwizard:dropwizard-hibernate:${dropwizardVersion}"
+
+  runtime 'com.h2database:h2:1.4.178'
 }
 
 mainClassName = 'todo.service.TodoService'

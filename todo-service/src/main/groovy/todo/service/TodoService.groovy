@@ -3,6 +3,8 @@ package todo.service
 import io.dropwizard.Application
 import io.dropwizard.setup.Bootstrap
 import io.dropwizard.setup.Environment
+import io.dropwizard.hibernate.HibernateBundle
+import io.dropwizard.db.DataSourceFactory
 
 class TodoService extends Application<TodoConfiguration> {
 
@@ -17,11 +19,20 @@ class TodoService extends Application<TodoConfiguration> {
 
   @Override
   public void initialize(Bootstrap<TodoConfiguration> bootstrap) {
-
+    bootstrap.addBundle(hibernate)
   }
 
   @Override
   public void run(TodoConfiguration configuration, Environment environment) {
-      environment.jersey().register(new TodoResource())
+    TodoDAO dao = new TodoDAO(hibernate.sessionFactory)
+    environment.jersey().register(new TodoResource(dao))
   }
+
+  private final HibernateBundle<TodoConfiguration> hibernate =
+    new HibernateBundle<TodoConfiguration>(TodoEntity, [] as Class[]) {
+      @Override
+      public DataSourceFactory getDataSourceFactory(TodoConfiguration configuration) {
+        return configuration.database
+      }
+    }
 }

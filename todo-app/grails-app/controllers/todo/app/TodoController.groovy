@@ -11,4 +11,8 @@ class TodoController {
   def list() {
     render serviceApi.list() as JSON
   }
+
+  def store(TodosCommand command) {
+    render serviceApi.store(command.todos)
+  }
 }

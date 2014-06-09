@@ -18,7 +18,7 @@
         },
 
         put: function (todos) {
-          localStorage.setItem(STORAGE_ID, JSON.stringify(todos));
+          $http.post('store', {todos: todos})
         }
       };
     }]);
