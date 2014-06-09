@@ -1,4 +1,5 @@
 import groovy.io.FileType
+import groovy.io.FileVisitResult
 
 def skippedDirs = ['buildSrc', 'gradle']
 def path = [] as LinkedList
