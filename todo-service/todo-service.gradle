@@ -1,0 +1,36 @@
+apply plugin: 'groovy'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'application'
+
+buildscript {
+  repositories {
+    mavenLocal()
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.github.jengelman.gradle.plugins:shadow:0.9.0-M2'
+  }
+}
+repositories {
+  jcenter()
+}
+
+dependencies {
+  compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+  compile project(":todo-api")
+  compile "io.dropwizard:dropwizard-core:${dropwizardVersion}"
+}
+
+mainClassName = 'todo.service.TodoService'
+
+shadowJar {
+  mergeServiceFiles()
+}
+
+run {
+  args 'server', "src/main/resources/todo.yml"
+}
+
+runShadow {
+  args 'server', "src/main/resources/todo.yml"
+}
