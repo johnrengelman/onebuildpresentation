@@ -5,19 +5,21 @@
  */
 (function() {
   angular.module('todomvc')
-    .factory('todoStorage', function () {
+    .factory('todoStorage', ['$http', function ($http) {
       'use strict';
 
       var STORAGE_ID = 'todos-angularjs';
 
       return {
-        get: function () {
-          return JSON.parse(localStorage.getItem(STORAGE_ID) || '[]');
+        get: function (getCallback) {
+          $http.get('list').success(function(data) {
+            getCallback(data);
+          });
         },
 
         put: function (todos) {
           localStorage.setItem(STORAGE_ID, JSON.stringify(todos));
         }
       };
-    });
+    }]);
 })();

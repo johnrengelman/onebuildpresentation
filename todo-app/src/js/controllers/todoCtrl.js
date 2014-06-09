@@ -10,7 +10,12 @@
     .controller('TodoCtrl', function TodoCtrl($scope, $routeParams, $filter, todoStorage) {
       'use strict';
 
-      var todos = $scope.todos = todoStorage.get();
+      var todos = $scope.todos = [];
+
+      todoStorage.get(function(retrievedTodos) {
+          $scope.todos = retrievedTodos;
+          todos = retrievedTodos;
+      })
 
       $scope.newTodo = '';
       $scope.editedTodo = null;

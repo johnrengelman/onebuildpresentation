@@ -1,6 +1,14 @@
 package todo.app
 
+import grails.converters.*
+
 class TodoController {
 
-    def index() { }
+  TodoServiceApi serviceApi
+
+  def index() { }
+
+  def list() {
+    render serviceApi.list() as JSON
+  }
 }

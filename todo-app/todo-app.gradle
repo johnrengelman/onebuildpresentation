@@ -27,6 +27,7 @@ dependencies {
 
   compile project(':todo-api')
   compile 'org.grails.plugins:asset-pipeline:1.8.7'
+  compile 'com.squareup.retrofit:retrofit:1.6.0'
 
   runtime 'com.h2database:h2:1.4.178'
 }
